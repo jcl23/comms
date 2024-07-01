@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobby</title>
+</head>
+<body>
+    <h1>Lobby Page</h1>
+    <p id="status">Welcome to the lobby!</p>
+
+    <div id="creatorActions" style="display: none;">
+        <h2>Creator Privileges</h2>
+        <button id="startGameButton">Start Game</button>
+        <!-- Add more privileged actions here -->
+    </div>
+    <div>
+        <button id="testMessage">Test Message</button>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const lobbyId = window.location.pathname.split('/').pop();
+
+        fetch(`/lobbies/${lobbyId}/details`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.creator === creatorId) {
+                    document.getElementById('creatorActions').style.display = 'block';
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        // test message onclick, send some text to the "echo" websocket endpoint and keep it alive
+        document.getElementById('testMessage').addEventListener('click', function() {
+            const ws = new WebSocket('ws://localhost:3000/echo');
+            ws.onopen = function() {
+                ws.send('Hello, Server!');
+            };
+            ws.onmessage = function(event) {
+                console.log('Server says:', event.data);
+            };
+        });
+        
+
+    </script>
+</body>
+</html>
