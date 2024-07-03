@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 });
 
 // Endpoint to create a lobby
-app.post("/create-lobby", (req, res) => {
+app.post("/api/create-lobby", (req, res) => {
     // Create a lobby based on the key and username
     const { username, key } = req.body;
     const lobby = createLobby(username, key);
@@ -45,7 +45,7 @@ app.post("/create-lobby", (req, res) => {
     });
 });
 
-app.get("/lobbies/:id", (req, res) => {
+app.get("/api/lobbies/:id", (req, res) => {
     const { id: lobbyId } = req.params;
     console.log("Route /lobbies/:id\n Req: ", req.params);
     if (lobbies[lobbyId]) {
@@ -55,7 +55,7 @@ app.get("/lobbies/:id", (req, res) => {
     }
 });
 
-app.post("/lobbies/:id/join", (req, res) => {
+app.post("/api/lobbies/:id/join", (req, res) => {
     const lobbyId = req.params.id;
     console.log("Route /lobbies/:id/join");
 
@@ -63,7 +63,7 @@ app.post("/lobbies/:id/join", (req, res) => {
     const lobby = lobbies[lobbyId];
 
     if (lobby) {
-        lobby.addUser(username, null);
+        // lobby.addUser(username, null);
         const isCreator = lobby.getOwner() === username;
         res.cookie("username", username, { expire: 500000 + Date.now() });
         res.json({ isCreator: isCreator });
@@ -75,7 +75,7 @@ app.post("/lobbies/:id/join", (req, res) => {
     }
 });
 
-app.ws("/lobbies/:id", (ws, req) => {
+app.ws("/ws/lobbies/:id", (ws, req) => {
     const lobbyId = req.params.id;
     const username = req.query.username;
 
@@ -106,13 +106,15 @@ app.ws("/lobbies/:id", (ws, req) => {
             const user = userData[0];
             console.log("Removing player: ", user[0])
             lobbies[lobbyId].removeUser(user);
-            broadcastUserList(lobbyId);
+            if (lobbies[lobbyId].getUsers().length > 0) {
+                broadcastUserList(lobbyId);
+            }
         }
     });
 });
 
 // Serve lobby details
-app.get("/lobbies/:id/details", (req, res) => {
+app.get("/api/lobbies/:id/details", (req, res) => {
     const lobbyId = req.params.id;
     const lobby = lobbies[lobbyId];
     if (lobby) {
@@ -133,6 +135,9 @@ const broadcastUserList = (lobbyId) => {
     const lobby = lobbies[lobbyId];
     const usernames = lobby.getUsers();
     const connections = lobby.getConnections();
+    if (connections === null) {
+        throw new Error("No connections found");
+    }
     const userListString = JSON.stringify({ type: "userList", users: usernames });
     connections.forEach(([username, ws]) => {
         ws.send(userListString);

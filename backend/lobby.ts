@@ -16,6 +16,7 @@ class Lobby {
         this.#owner = username;
     }
     addUser(username, ws) {
+        console.log("adding user", username)
         if (Object.keys(this.#users).length >= MAX_USERS) {
             throw new Error('Lobby is full');
         }
@@ -44,8 +45,15 @@ class Lobby {
         return Object.entries(this.#users);
     }
 }
+
+const LOBBY_ID_CHARS = "CDEFHJKMNPRTVWXY2345689";
 function generateLobbyId() {
-    return Math.random().toString(36).slice(2, 6).toUpperCase();
+    // sample 4 characters from the LOBBY_ID_CHARS
+    let id = '';
+    for (let i = 0; i < 4; i++) {
+        id += LOBBY_ID_CHARS.charAt(Math.floor(Math.random() * LOBBY_ID_CHARS.length));
+    }
+    return id;
 }
 
 export default Lobby;
