@@ -4,7 +4,7 @@ class Lobby {
     #owner: string;
     #id: string;
     #key: string;
-    #users: Record<string, string>;
+    #users: Record<string, WebSocket>;
 
     constructor(key, owner) {
         this.#id = generateLobbyId();
@@ -15,11 +15,17 @@ class Lobby {
     setHost(username) {
         this.#owner = username;
     }
-    addUser(userId, userName) {
+    addUser(username, ws) {
         if (Object.keys(this.#users).length >= MAX_USERS) {
             throw new Error('Lobby is full');
         }
-        this.#users[userId] = userName;
+        this.#users[username] = ws;
+    }
+    removeUser(username) {
+        console.log(`Removing user ${username} from  ${this.#users}`);
+        delete this.#users[username];
+        console.log(`Removed user ${username} from  ${this.#users}`);
+
     }
     getOwner() {
         return this.#owner;
@@ -27,8 +33,15 @@ class Lobby {
     getId() {
         return this.#id;
     }
+    getKey() {
+        return this.#key;
+    }
     getUsers() {
-        return Object.values(this.#users);
+        return Object.keys(this.#users);
+    }
+
+    getConnections() {
+        return Object.entries(this.#users);
     }
 }
 function generateLobbyId() {

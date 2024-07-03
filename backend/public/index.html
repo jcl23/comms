@@ -3,49 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="cookieParse.js"></script>
     <title>Lobby Home Page</title>
 </head>
 <body>
     <h1>Welcome to the Lobby Home Page</h1>
     <form id="makeLobby">
-        <input type="text" name="name"><label for="name">Name</label>
-        <input type="text" name="key"><label for="name">Key</label>
+        CREATE
+        <input type="text" name="ownername"><label for="ownername">Name</label>
+        <input type="text" name="key"><label for="key">Key</label>
         <input type="submit"><label for="name">Create lobby</label>
     </form>
 
     <form id="joinLobby">
-      <input type="text" maxlength="4" name="lobbyId">
+        JOIN
+        <input type="text" name="name"><label for="name">Name</label>
+      <input type="text" maxlength="4" name="lobbyId"><label for="key">Lobby Id</label>
       <input type="submit">
     </form>
     <script>
     
 
-        document.querySelector('#makeLobby').addEventListener('submit', function(event) {
-          const username = document.querySelector('input[name="name"]').value;
-          const key = document.querySelector('input[name="key"]').value;
-            fetch('/create-lobby', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, key })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Lobby Created:', data);
-                const { id, key } = data;
-                window.location.href = `/lobbies/${id}?key=${key}`;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        });
-        // form submit for joinoign a lobby.
-        document.querySelector('#joinLobby').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const lobbyId = document.querySelector('input[name="lobbyId"]').value;
-            window.location.href = `/lobbies/${lobbyId}`;
-        });/////////////////////////////////////////
+        
     </script>
 </body>
 </html>

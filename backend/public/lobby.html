@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="../cookieParse.js"></script>
+    <script type="text/javascript" src="../lobby.js"></script>
+
     <title>Lobby</title>
 </head>
 <body>
@@ -17,32 +20,10 @@
     <div>
         <button id="testMessage">Test Message</button>
     </div>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const lobbyId = window.location.pathname.split('/').pop();
-
-        fetch(`/lobbies/${lobbyId}/details`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.creator === creatorId) {
-                    document.getElementById('creatorActions').style.display = 'block';
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        // test message onclick, send some text to the "echo" websocket endpoint and keep it alive
-        document.getElementById('testMessage').addEventListener('click', function() {
-            const ws = new WebSocket('ws://localhost:3000/echo');
-            ws.onopen = function() {
-                ws.send('Hello, Server!');
-            };
-            ws.onmessage = function(event) {
-                console.log('Server says:', event.data);
-            };
-        });
-        
-
-    </script>
+    <div id="playerList">
+        <h2>Players</h2>
+        <ul id="players">
+            
+        </ul>
 </body>
 </html>
