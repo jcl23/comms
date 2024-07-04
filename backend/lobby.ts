@@ -56,4 +56,16 @@ function generateLobbyId() {
     return id;
 }
 
-export default Lobby;
+const createLobby = function (lobbies, username, key) {
+    debugger;
+    const lobby = new Lobby(key, username);
+    const lobbyId = lobby.getId();
+    lobbies[lobbyId] = lobby;
+    lobbies[lobbyId].setHost(username);
+    console.log(`Lobby created with ID: ${lobbyId} by ${username}`);
+    return lobbies[lobbyId];
+};
+export {
+    Lobby,
+    createLobby
+}

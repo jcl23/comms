@@ -1,0 +1,19 @@
+import mongoose, { Schema, Document } from 'mongoose';
+
+type Team = "T" | "CT";
+
+interface IInstruction extends Document {
+  team: Team;
+  round: number;
+  content: any; // Use 'any' for flexible schema
+  updatedAt: Date;
+}
+
+const InstructionSchema: Schema = new Schema({
+  team: { type: String, required: true },
+  round: { type: Number, required: true },
+  content: { type: Schema.Types.Mixed, required: true },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+export const Instruction = mongoose.model<IInstruction>('Instruction', InstructionSchema);

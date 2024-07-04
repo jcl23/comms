@@ -4,22 +4,14 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const app = express();
 const expressWs = require("express-ws")(app);
-import Lobby from "./lobby";
+import { Lobby, createLobby } from "./lobby";
 
 // const wss = new WebSocket.Server({ noServer: true });/////////////////////////////////
 const port = 3000;
 
 const lobbies: Record<string, Lobby> = {};
 
-const createLobby = function (username, key) {
-    debugger;
-    const lobby = new Lobby(key, username);
-    const lobbyId = lobby.getId();
-    lobbies[lobbyId] = lobby;
-    lobbies[lobbyId].setHost(username);
-    console.log(`Lobby created with ID: ${lobbyId} by ${username}`);
-    return lobbies[lobbyId];
-};
+
 
 // Middleware to parse JSON bodies
 app.use(express.json());
