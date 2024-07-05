@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 type Team = "T" | "CT";
 
-interface IInstruction extends Document {
+interface Instruction extends Document {
   team: Team;
   round: number;
   content: any; // Use 'any' for flexible schema
@@ -16,4 +16,4 @@ const InstructionSchema: Schema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-export const Instruction = mongoose.model<IInstruction>('Instruction', InstructionSchema);
+export const Instruction = mongoose.model<Instruction>('Instruction', InstructionSchema);

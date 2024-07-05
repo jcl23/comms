@@ -1,0 +1,7 @@
+{
+    "teams": ["T", "CT", "Both"],
+    "maps": ["Mirage", "Dust 2", "Nuke", "Inferno", "Ancient", "Vertigo", "Anubis" ],
+    "utility": ["Smoke", "Flash", "Incendiary", "Molotov", "HE", "Decoy"],
+    "throw_type": ["Jump", "Run", "Stand", "Crouch", "Walk"],
+    "strafe": ["Left", "Right", "None"]
+}

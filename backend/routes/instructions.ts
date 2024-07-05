@@ -1,15 +1,24 @@
 import { Router } from 'express';
 import { Instruction } from '../models/instructions';
+import connectDB from '../database';
+
+const uri = process.env.MONGO_URI;
 
 const router = Router();
+
 
 // Get all instructions
 router.get('/', async (req, res) => {
   try {
     const instructions = await Instruction.find();
-    res.json(instructions);
+    res.json({message: "Test message"});
+    //res.json(instructions);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'An unknown error occurred' });
+    }
   }
 });
 
@@ -33,7 +42,11 @@ router.post('/', async (req, res) => {
     const newInstruction = await instruction.save();
     res.status(201).json(newInstruction);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'An unknown error occurred' });
+    }
   }
 });
 

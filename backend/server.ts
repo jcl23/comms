@@ -1,9 +1,17 @@
 const express = require("express");
+import connectDB from "./database";
+
+
 const cookie_parser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
 const app = express();
 const expressWs = require("express-ws")(app);
+
+
+import instructionsRouter from "./routes/instructions";
+import throwsRouter from "./routes/throws";
+
 import { Lobby, createLobby } from "./lobby";
 
 // const wss = new WebSocket.Server({ noServer: true });/////////////////////////////////
@@ -12,12 +20,15 @@ const port = 3000;
 const lobbies: Record<string, Lobby> = {};
 
 
-
+connectDB();
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cookie_parser());
 app.use(express.static(path.join(__dirname, "public", "scripts")));
 // Serve the HTML file at the root URL
+
+app.use("/instructions", instructionsRouter)
+app.use("/throws", throwsRouter)
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
     console.log("served");
@@ -27,7 +38,7 @@ app.get("/", (req, res) => {
 app.post("/api/create-lobby", (req, res) => {
     // Create a lobby based on the key and username
     const { username, key } = req.body;
-    const lobby = createLobby(username, key);
+    const lobby = createLobby(lobbies, username, key);
     res.cookie("username", username, { expire: 500000 + Date.now() });
     res.json({
         id: lobby.getId(),

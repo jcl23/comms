@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import CreateLobbyForm from './components/CreateLobbyForm';
 import JoinLobbyForm from './components/JoinLobbyForm';
 import parseCookie from './cookieParse';
+import UtilityAdmin from './components/UtilityAdmin';
+
+
 export type AppState = {
-  currentView: 'create' | 'join' | 'in-lobby' | 'in-own-lobby' | null;
+  currentView: 'create' | 'join' | 'in-lobby' | 'in-own-lobby' | "editing" | null;
   users: string[];
   inLobby: boolean;
   lobbyId?: string,
@@ -57,6 +60,7 @@ const App: React.FC = () => {
   return (
     <div>
       <h1>Lobby System</h1>
+      <button onClick={() => setState({ ...state, currentView: "editing"})}>Edit</button>
       {currentView === null && (
         <div>
           <button onClick={() => setState({ ...state, currentView: "create"}) }>Create Lobby</button>
@@ -69,6 +73,7 @@ const App: React.FC = () => {
           <p>Name: {state.username}</p>
         </div>
       )}
+      {currentView === "editing" && <UtilityAdmin />}
       {socket && (
        <div>
         <h2>Users</h2>
