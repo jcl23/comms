@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 
 import { UtilThrow } from "../models/throws";
 import utilityData from "../data/utility.json";
+import Dropdown from "./Dropdown";
+
 
 const { 
     teams: ALL_TEAMS, 
@@ -14,6 +16,7 @@ const {
 } = utilityData;
 
 const UtilityAdmin: React.FC = () => {
+    const [activeMap, setMap] = useState<string>("Mirage");
     const [throws, setThrows] = useState<UtilThrow[]>([]);
     const [newThrow, setNewThrow] = useState<UtilThrow | null>(null);
     const [editing, setEditing] = useState<boolean>(false);
@@ -52,15 +55,22 @@ const UtilityAdmin: React.FC = () => {
     const handleSaveThrow = async () => {
         if (newThrow) {
             try {
+                let method;
+                if (newThrow._id == "") {
+                    method = "POST";
+                } else {
+                    method = "PUT";
+                }
+
                 const response = await fetch("/throws", {
-                    method: "POST",
+                    method,
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(newThrow),
                 });
                 const data = await response.json();
-                setThrows([...throws, data]);
+                setThrows([...throws.filter(({_id}) => _id != data._id), data]);
                 setEditing(false);
             } catch (error) {
                 console.error(error);
@@ -72,10 +82,18 @@ const UtilityAdmin: React.FC = () => {
         setEditing(false);
     };
 
+    useEffect(() => {
+        console.log(throws)
+        console.log("active map:", activeMap)
+    }, [throws, activeMap])
+
     return (
         <div>
-            <h1>Utility Throws</h1>
-            <button onClick={handleAddThrow}>Add Throw</button>
+            <div>
+                <button onClick={handleAddThrow}>Add Throw</button>
+                {/* Dropdown to pick from maps */}
+                <Dropdown choices={utilityData.maps} onSelect={setMap} />
+            </div>
             {editing && (
                 <div>
                     <h2>Add New Throw</h2>
@@ -215,14 +233,31 @@ const UtilityAdmin: React.FC = () => {
                 </div>
             )}
             <h2>Throws</h2>
-            <ul>
-                {throws.map((t) => (
-                    <li key={t._id}>
-                        {t.team} {t.utility} {t.throw} {t.throwPosition.join(",")}{" "}
-                        {t.activePosition.join(",")}
-                    </li>
+            <table>
+                {throws.filter(({map}) => map == activeMap).map((t) => (
+                    <tr key={t._id}>
+                        <td>
+                            {t.team}
+                        </td> 
+                        
+                        
+                        
+                        
+                        
+                        
+                        <td>{t.utility.ca}</td>
+                        <td>{t.throw}</td>
+                        <td>{t.throwPosition.join(",")}</td>
+                        <td>{t.activePosition.join(",")}</td>        
+                         
+                
+                        <button onClick={() => {
+                            setNewThrow(t);
+                            setEditing(true);    
+                        }}>Edit</button>
+                    </tr>
                 ))}
-            </ul>
+            </table>
         </div>
     );
 };

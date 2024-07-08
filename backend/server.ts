@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public", "scripts")));
 
 app.use("/instructions", instructionsRouter)
 app.use("/throws", throwsRouter)
+
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
     console.log("served");

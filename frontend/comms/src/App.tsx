@@ -3,6 +3,7 @@ import CreateLobbyForm from './components/CreateLobbyForm';
 import JoinLobbyForm from './components/JoinLobbyForm';
 import parseCookie from './cookieParse';
 import UtilityAdmin from './components/UtilityAdmin';
+import Header from './components/Header';
 
 
 export type AppState = {
@@ -59,14 +60,9 @@ const App: React.FC = () => {
   }, [state.inLobby])
   return (
     <div>
-      <h1>Lobby System</h1>
-      <button onClick={() => setState({ ...state, currentView: "editing"})}>Edit</button>
-      {currentView === null && (
-        <div>
-          <button onClick={() => setState({ ...state, currentView: "create"}) }>Create Lobby</button>
-          <button onClick={() => setState({  ...state, currentView: "join" })}>Join Lobby</button>
-        </div>
-      )}
+      
+      <Header state={state} setState={setState} />
+      
       {currentView === 'in-own-lobby' && (
         <div>
           <p>Created lobby with ID: {state.lobbyId}</p>
