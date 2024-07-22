@@ -25,16 +25,9 @@ const Header = ({ state, setState }: HeaderProps) => {
     };
 
     return (
-        <header style={{
-            position: "absolute",
-            top: 0,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "1rem",
-            borderBottom: "1px solid #ccc",
-        }}>
+        <header>
             <h2>Utility Comms</h2>
+            
             <nav>
                 <button onClick={handleCreate}>Create Lobby</button>
                 <button onClick={handleJoin}>Join Lobby</button>

@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-type Team = "T" | "CT";
+import { Team } from '../../shared/enums/teams';
 
 interface Instruction extends Document {
   team: Team;

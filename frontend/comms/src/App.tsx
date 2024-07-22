@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CreateLobbyForm from './components/CreateLobbyForm';
 import JoinLobbyForm from './components/JoinLobbyForm';
 import parseCookie from './cookieParse';
-import UtilityAdmin from './components/UtilityAdmin';
+import UtilityAdmin from './components/UtilityAdmin/UtilityAdmin';
 import Header from './components/Header';
 
 
