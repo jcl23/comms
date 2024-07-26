@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ThrowType, UtilThrow } from "../../../../../shared/enums/utility";
 import { EditThrowModal } from "../EditThrowModal/EditThrowModal";
 import React from "react";
+import describeThrow from "../../util/describeThrow";
 
 // UtilThrow represents the type of dat that EditThrowEntry expects. 
 // This is a component in a list for editing.
@@ -23,23 +24,7 @@ export const EditThrowEntry = ({ throwData, setThrowData, ...props }: EditThrowE
         throwPositionCallout, activePositionCallout,
     } = throwData;
     
-    const throwDescription: string[] = [];
-    
-    let movement: string[] = [];
-    if (doCrouch) movement.push("Crouch");
-    if (speed == "Run") movement.push("Running");
-    if (speed == "Walk") movement.push("Walking");
-
-    throwDescription.push(movement.join("-"));
-
-    if (throwType == "Left") throwDescription.push("Left-Click");
-    if (throwType == "Middle") throwDescription.push("Left & Right-Click");
-    if (throwType == "Right") throwDescription.push("Right-Click");
-
-    if (doJump) throwDescription.push("Jump");
-    throwDescription.push("Throw");
-
-    const throwDescriptionString = throwDescription.join(" ");
+    const throwDescriptionString = describeThrow(throwData);
 
     // const dataList = Object.entries(throwData).filter(([propName]) => (
     //     !["map", "throwId", "userId"].includes(propName)

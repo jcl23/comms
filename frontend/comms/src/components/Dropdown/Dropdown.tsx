@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import styles from './Dropdown.module.css';
 type DropdownProps = {
     choices: string[];
     selected: string;
@@ -16,7 +16,7 @@ const Dropdown = ({ choices, onSelect, selected }: DropdownProps) => {
 
   return (
     <div>
-      <select value={selected} onChange={handleChange}>
+      <select className={styles.dropdown} value={selected} onChange={handleChange}>
         <option value="" disabled>Select an option</option>
         {choices.map((option, index) => (
           <option key={index} value={option}>

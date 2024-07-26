@@ -1,10 +1,10 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import {Utility, UtilThrow, StrafeType, isUtility, isSpeed, isStrafeType, isThrowType } from "../../shared/enums/utility";
-import { isTeam, Team } from '../../shared/enums/teams';
-import { isValidPair, isValidTriple } from '../../shared/enums/position';
-import { MongoSchemaFor, MongoSchemaType } from '../../util/mongoSchema';
+import {Utility, UtilThrow, StrafeType, isUtility, isSpeed, isStrafeType, isThrowType } from "@shared/enums/utility";
+import { isTeam, Team } from '@shared/enums/teams';
+import { isValidPair, isValidTriple } from '@shared/enums/position';
+import { MongoSchemaFor, MongoSchemaType } from '../util/types/mongoSchema';
 import { isMap } from 'util/types';
-import { isMapName } from '../../shared/enums/maps';
+import { isMapName } from '@shared/enums/maps';
 
 /* Should represent all the data for a particular use of utility, including
     * the team(s) that can throw it, some are for both
@@ -109,5 +109,5 @@ const schemaObject: MongoSchemaFor<UtilThrow> = {
     updatedAt: { type: mongoose.Schema.Types.String, required: false },
 };
 
-export const UtilThrowSchema: Schema = new Schema<UtilThrowDocument>(schemaObject);
+export const UtilThrowSchema: Schema = new Schema<UtilThrowDocument>(schemaObject as any);
 export const UtilThrowModel = mongoose.model<UtilThrow>('UtilThrow', UtilThrowSchema);

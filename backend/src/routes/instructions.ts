@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Instruction } from '../models/instructions';
-import connectDB from '../database';
+import connectDB from '../database.js';
 
 const uri = process.env.MONGO_URI;
 

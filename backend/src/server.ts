@@ -1,13 +1,21 @@
-const express = require("express");
+import express from "express";
 import connectDB from "./database";
+import expressWs_ from "express-ws";
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 
-const cookie_parser = require("cookie-parser");
-const path = require("path");
-const bodyParser = require("body-parser");
+const __dirname = process.env.BASE_DIR || "";
+console.log({ __dirname });
+import cookie_parser from "cookie-parser";
+import path from "path";
+
+import bodyParser from "body-parser";
+
 const app = express();
-const expressWs = require("express-ws")(app);
 
+var expressWs = expressWs_(app);
 
 import instructionsRouter from "./routes/instructions";
 import throwsRouter from "./routes/throws";
@@ -24,13 +32,14 @@ connectDB();
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cookie_parser());
-app.use(express.static(path.join(__dirname, "public", "scripts")));
+app.use(express.static(path.join("public", "scripts")));
 // Serve the HTML file at the root URL
 
 app.use("/instructions", instructionsRouter)
 app.use("/throws", throwsRouter)
 
 app.get("/", (req, res) => {
+    debugger;
     res.sendFile(path.join(__dirname, "public", "index.html"));
     console.log("served");
 });
@@ -40,7 +49,7 @@ app.post("/api/create-lobby", (req, res) => {
     // Create a lobby based on the key and username
     const { username, key } = req.body;
     const lobby = createLobby(lobbies, username, key);
-    res.cookie("username", username, { expire: 500000 + Date.now() });
+    res.cookie("username", username, {  });
     res.json({
         id: lobby.getId(),
         key: lobby.getKey(),
@@ -69,7 +78,7 @@ app.post("/api/lobbies/:id/join", (req, res) => {
     if (lobby) {
         // lobby.addUser(username, null);
         const isCreator = lobby.getOwner() === username;
-        res.cookie("username", username, { expire: 500000 + Date.now() });
+        res.cookie("username", username, { });
         res.json({ isCreator: isCreator });
 
         broadcastUserList(lobbyId);
@@ -79,7 +88,7 @@ app.post("/api/lobbies/:id/join", (req, res) => {
     }
 });
 
-app.ws("/ws/lobbies/:id", (ws, req) => {
+(app as any).ws("/ws/lobbies/:id", (ws, req) => {
     const lobbyId = req.params.id;
     const username = req.query.username;
 

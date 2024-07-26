@@ -21,9 +21,12 @@ const Header = ({ state, setState }: HeaderProps) => {
     };
 
     const handleEdit = () => {
-        setState({ ...state, currentView: "editing" });
+        setState({ ...state, currentView: "editutil" });
     };
 
+    const handleCallouts = () => {
+        setState({ ...state, currentView: "callouts" });
+    }
     return (
         <header>
             <h2>Utility Comms</h2>
@@ -32,6 +35,7 @@ const Header = ({ state, setState }: HeaderProps) => {
                 <button onClick={handleCreate}>Create Lobby</button>
                 <button onClick={handleJoin}>Join Lobby</button>
                 <button onClick={handleEdit}>Edit Utility</button>
+                <button onClick={handleCallouts}>Calls</button>
             </nav>
         </header>
     );

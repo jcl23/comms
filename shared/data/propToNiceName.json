@@ -1,0 +1,9 @@
+{
+    "map": "Map",
+    "team": "Team",
+    "utility": "Utility Choice",
+    "lineup": "Lineup",
+    "video": "Video",
+    "throwPositionCallout": "From",
+    "activePositionCallout": "To"
+}

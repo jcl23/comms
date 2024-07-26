@@ -3,3 +3,4 @@
 .env
 **/util/data
 **justin_util
+**/dist

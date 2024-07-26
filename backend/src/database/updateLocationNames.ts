@@ -1,21 +1,18 @@
-import { UtilThrow } from "../../shared/enums/utility"
-import { queryCallout } from "../../shared/util/queryCallout";
+// updateLocationNames.ts
+// Updates the location names for each callout, by searching shared/data/calloutBoxes 
+// for the closest callout name to the throw position and active position.
+
+import { UtilThrow } from "@shared/enums/utility"
+import { queryCallout } from "@shared/util/queryCallout";
 import { UtilThrowModel } from "../models/throws";
 
 const getLocationNames = function(throwData: UtilThrow): Record<string, string> {
     // ignore the current callout name and overwrite
     // find the location name
-    let throwPositionCallout, activePositionCallout;
-    for (let i = 0; i < 5; i++) {
-        const tol = i * 10;
-        throwPositionCallout = queryCallout(throwData.map, throwData.throwPosition, tol, true);
-        if (throwPositionCallout != "") break;
-    }
-    for (let i = 0; i < 5; i++) {
-        const tol = i * 10;
-        activePositionCallout = queryCallout(throwData.map, throwData.activePosition, tol, true);
-        if (throwPositionCallout != "") break;
-    }
+    const { map, throwPosition, activePosition } = throwData;
+
+    const throwPositionCallout = queryCallout(map, [...throwPosition]);
+    const activePositionCallout = queryCallout(map, [...activePosition]);
    
     return { throwPositionCallout, activePositionCallout };
 }
@@ -46,14 +43,16 @@ export const updateLocationNames = async function(success = console.log, error =
         
         utilThrowDocs.forEach(doc => {
             // temporary while we don't have calls for dust2:
-            if (doc.map == "Dust 2") return;
+            if (doc.lineup.includes("9QreZ6rRWh")) {
+                let k = 1;
+            }
             const { throwPositionCallout, activePositionCallout} = getLocationNames(doc);
             if (throwPositionCallout != "") {
                 console.log(`Updating ${doc.lineup} with ${throwPositionCallout}`)
                 doc.throwPositionCallout = throwPositionCallout;
             }
             if (activePositionCallout != "") {
-                console.log(`Updating ${doc.lineup} lands at ${throwPositionCallout}`)
+                console.log(`Updating ${doc.lineup} lands at ${activePositionCallout}`)
                 doc.activePositionCallout = activePositionCallout;
             }
         });

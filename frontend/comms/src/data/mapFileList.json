@@ -1,0 +1,9 @@
+{
+    "Ancient": ["/src/assets/Ancient_map.png"],
+    "Anubis": ["/src/assets/Anubis_map.png"],
+    "Dust2": ["/src/assets/Dust2_map.png"],
+    "Inferno": ["/src/assets/Inferno_map.png"],
+    "Mirage": ["/src/assets/Mirage_map.png"],
+    "Nuke": ["/src/assets/Nuke_map1.png", "/src/assets/Nuke_map2.png"],
+    "Vertigo": ["/src/assets/Vertigo_map1.png", "/src/assets/Vertigo_map2.png"]
+}

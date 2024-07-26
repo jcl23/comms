@@ -1,24 +1,27 @@
 import { Router } from 'express';
-import { UtilThrowModel } from '../models/throws';
-import connectDB from '../database';
-import { REQUIRED_THROW_PROPS, UtilThrow } from '../../shared/enums/utility';
-import { queryCallout } from '../../shared/util/queryCallout';
+import { UtilThrowModel, UtilThrowSchema } from '../models/throws';
+import connectDB from '../database.js';
+import { REQUIRED_THROW_PROPS, UtilThrow } from '@shared/enums/utility.js';
+import { queryCallout, testCallout } from '@shared/util/queryCallout.js';
 import { updateLocationNames } from '../database/updateLocationNames';
 import { activePositionToMapPosition, assignActivePositions } from '../database/assignActivePositions';
-import { getThrowsAtPosition } from '../database/throwGetters';
 import { isMap } from 'util/types';
-import { isMapName, MapName } from '../../shared/enums/maps';
+import { isMapName, MapName } from '@shared/enums/maps.js';
+import assert from 'assert';
+import { isValidPair, isValidTriple } from '@shared/enums/position';
 
 const uri = process.env.MONGO_URI;
 
 const router = Router();
 
-const LARGE_UPDATES = false;
+const LARGE_UPDATES = true;
 
 
 // Get all instructions
 router.get('/', async (req, res) => {
     try {
+
+        console.log("Should trigger debug");
         const utilThrows = await UtilThrowModel.find();
         // res.json({message: "Test message for throws endpoint"});
         res.json(utilThrows);
@@ -70,7 +73,7 @@ router.get('/:mapName/pos/:x/:y', async (req, res) => {
         }
     }
 })
-    */
+*/
 router.get('/updateLocationNames', async (req, res) => {
     if (!LARGE_UPDATES) {
         return res.status(403).json({ message: 'Big effects endpoint disabled, turn on LARGE_UPDATES to use' });
@@ -86,7 +89,41 @@ router.get('/updateLocationNames', async (req, res) => {
         }
     }
 });
+router.get('/callouts', async (req, res) => {
+    const { map, throwPosition: throwPosition_, activePosition: activePosition_ } = req.query;
+    if (!map || !throwPosition_ || !activePosition_) {
+        return res.status(400).json({ message: 'Missing required query parameters' });
+    }
+    if (typeof map !== 'string' || typeof throwPosition_ !== 'string' || typeof activePosition_ !== 'string') {
+        return res.status(400).json({ message: 'Invalid query parameter types' });
+    }    
+    const throwPosition = throwPosition_.split(',').map(Number);
+    const activePosition = activePosition_.split(',').map(Number);
 
+    assert(isMapName(map), `Invalid map name: ${map}`);
+    assert(isValidPair(throwPosition) || isValidTriple(throwPosition), `Invalid throw position: ${throwPosition}`);
+    assert(isValidPair(activePosition) || isValidTriple(activePosition), `Invalid active position: ${throwPosition}`);
+    const throwPositionCallout = queryCallout(map, throwPosition);
+    const activePositionCallout = queryCallout(map, activePosition);
+    res.json({ map, activePositionCallout, throwPositionCallout });
+});
+
+router.get('/queryCallout', async (req, res) => {
+    const { map, point: point_, calloutName } = req.query;
+    if (!map || !point_) {
+        return res.status(400).json({ message: 'Missing required query parameters' });
+    }
+    if (typeof map !== 'string' || typeof point_ !== 'string' || typeof calloutName !== 'string') {
+        return res.status(400).json({ message: 'Invalid query parameter types' });
+    }
+    const point = point_.split(',').map(Number);
+    
+
+    assert(isMapName(map), `Invalid map name: ${map}`);
+    assert(isValidPair(point) || isValidTriple(point), `Invalid point: ${point}`);
+    const present = testCallout( point, map, calloutName);
+    res.json({ map, point, calloutName, present });
+});
 router.get('/updateActivePosition', async (req, res) => {
     if (!LARGE_UPDATES) {
         return res.status(403).json({ message: 'Big effects endpoint disabled, turn on LARGE_UPDATES to use' });
@@ -166,18 +203,21 @@ router.post('/', async (req, res) => {
 router.put('/', async (req, res) => {
     const id = req.body._id;
     try {
-        // Find the document by ID and update it with the request body
-        const updatedUtilThrow = await UtilThrowModel.findByIdAndUpdate(id, {
+        const dataCheck = {
             team: req.body.team,
             utility: req.body.utility,
             throw: req.body.throw,
             throwPosition: req.body.throwPosition,
+            activePosition: req.body.activePosition,
+            throwPositionCallout: req.body.throwPositionCallout,
+            activePositionCallout: req.body.activePositionCallout,
             throwAngle: req.body.throwAngle,
             strafe: req.body.strafe,
-            activePosition: req.body.activePosition,
             content: req.body.content,
             updatedAt: new Date()
-        }, { new: true }); // `new: true` returns the updated document
+        }
+        // Find the document by ID and update it with the request body
+        const updatedUtilThrow = await UtilThrowModel.findByIdAndUpdate(id, req.body, { new: true }); // `new: true` returns the updated document
 
         if (!updatedUtilThrow) {
             return res.status(404).json({ message: 'UtilThrow not found' });

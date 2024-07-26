@@ -2,10 +2,10 @@
 // the real values of the "throw positions", we can estimate the positions of 
 // the active values (where the grenade pops) by calculating a transformation matrix.
 
-import { MapName } from "../../shared/enums/maps";
-import { computeTransformationMatrix, transformPoint } from "../../shared/util/regression";
+import { MapName } from "@shared/enums/maps";
+import { computeTransformationMatrix, transformPoint } from "@shared/util/regression";
 import { UtilThrowModel } from "../models/throws";
-import iconToPosition from "../../util/data/iconToPositions.json";
+import iconToPosition from "@shared/data/iconToPositions.json";
 export const activePositionToMapPosition = async function() {
     // for every single throw, move the current thing in the active position to active icon position.
     const throws = await UtilThrowModel.find({});

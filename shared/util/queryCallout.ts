@@ -14,24 +14,44 @@ import calloutBoxes from "../data/calloutBoxes.json";
  * @param searchPlane If true, only search on the x and z axis
  * @returns The callout name of the box that contains the point
  */
-export const queryCallout = (map: MapName, point: Triple | Pair, tol = 0, searchPlane = false) : string => {
+type CalloutData = [MapName, number, number, number, number, number, number];
+export const testMembership = (point: Triple | Pair, callout: CalloutData, tol=0) : boolean => {
+    let [name, minX, minY, minZ, maxX, maxY, maxZ] = callout;
+    const [x, y, z] = point;
+    const searchPlane = (z === undefined);
+    return (
+        x >= (minX - tol) && x <= (maxX + tol) &&
+        y >= (minY - tol) && y <= (maxY + tol) &&
+        (searchPlane || (z >= (minZ - tol) && z <= (maxZ + tol)))
+    ) 
+    
+}
+export const queryCallout = (map: MapName, point: Triple | Pair, tol = 0) : string => {
     // bc a lot of the positions have 0 for y we just search on x and z when searchPlane is true
     let [x, y, z] = point;
-    z = z || 0;
-    const calloutList = calloutBoxes[map];
+    
+
+    const calloutList = calloutBoxes[map] as CalloutData[];
     // if calloutList not array, throw the name of the map
     if (!Array.isArray(calloutList)) {
         throw new Error(`Map "${map}" does not have a callout list.`);
     }
-    console.log(`Searching for box with point ${x}, ${y}, ${z}`);
-    for (let [name, minX, minY, minZ, maxX, maxY, maxZ] of calloutList) {
-        if (
-            x >= (minY - tol) && x <= (maxX + tol) &&
-            y >= (minY - tol) && y <= (maxY + tol) &&
-            ((z >= (minZ - tol) && z <= (maxZ + tol)) || searchPlane)
-        ) {
-            return name;
+    
+    for (let callout of calloutList) {
+        if (testMembership(point, callout, tol)) {
+            console.log(`Found callout ${callout[0]} for point ${point}`);
+            return callout[0];
         }
     }
     return "";
+}
+
+export const testCallout = (point: Triple | Pair, map: MapName, calloutName: string, tol=0) : boolean => {
+    const calloutList = (calloutBoxes as any) as Record<MapName, CalloutData[]>;
+
+    const calloutPieces = calloutList[map].filter((callout) => callout[0] === calloutName);
+    if (calloutPieces.length === 0) {
+        return false;
+    }
+    return calloutPieces.some((callout) => testMembership(point, callout, tol));
 }

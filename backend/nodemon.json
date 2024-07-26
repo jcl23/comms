@@ -1,0 +1,8 @@
+{
+    "watch": ["src"],
+    "ext": "ts",
+    "exec": "tsx --inspect=localhost:9229 src/server.ts",
+    "execMap": { 
+        "ts": "node --require ts-node/register"
+    }
+}

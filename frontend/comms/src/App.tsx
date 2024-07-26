@@ -4,10 +4,11 @@ import JoinLobbyForm from './components/JoinLobbyForm';
 import parseCookie from './cookieParse';
 import UtilityAdmin from './components/UtilityAdmin/UtilityAdmin';
 import Header from './components/Header';
+import { CalloutEditor } from './components/MapSelector/CalloutEditor';
 
 
 export type AppState = {
-  currentView: 'create' | 'join' | 'in-lobby' | 'in-own-lobby' | "editing" | null;
+  currentView: 'create' | 'join' | 'in-lobby' | 'in-own-lobby' | "editutil" | "callouts" | null;
   users: string[];
   inLobby: boolean;
   lobbyId?: string,
@@ -69,7 +70,8 @@ const App: React.FC = () => {
           <p>Name: {state.username}</p>
         </div>
       )}
-      {currentView === "editing" && <UtilityAdmin />}
+      {currentView === "editutil" && <UtilityAdmin />}
+      {currentView === "callouts" && <CalloutEditor />}
       {socket && (
        <div>
         <h2>Users</h2>

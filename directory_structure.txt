@@ -1,0 +1,23 @@
+.gitattributes
+.gitignore
+.vscode
+backend
+    src
+        database
+        models
+        public
+        routes
+        util
+frontend
+    comms
+        .gitignore
+        public
+        src
+justin_util
+    data
+shared
+    data
+    enums
+    util
+util
+    data
