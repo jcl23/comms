@@ -1,5 +1,4 @@
 const MAX_USERS = 5;
-
 class Lobby {
     #owner: string;
     #id: string;

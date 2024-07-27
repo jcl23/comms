@@ -1,0 +1,23 @@
+.planStepPanel {
+    border: 1px solid red;
+    padding: 10px;
+    margin: 2px;
+    display: flex;
+    flex-direction: row;
+}
+
+.planEditorOuter {
+    display: flex;
+    flex-direction: column;
+}
+
+.planEditorContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px dashed rgb(132, 255, 0);
+}
+
+.planEditor {
+
+}

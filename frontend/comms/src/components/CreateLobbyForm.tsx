@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import parseCookie from '../cookieParse';
 import { AppState } from '../App';
+import React, { useState } from 'react';
 
 type CreateLobbyFormProps = {
     setState: React.Dispatch<React.SetStateAction<AppState>>;

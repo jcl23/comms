@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "jsx": "react",
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "composite": true,
+    "paths": {
+      "*": ["node_modules/*"],
+      "@shared/*": ["./../../shared/dist/*"]
+    },
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.css"],
+  "references": [
+    { "path": "../../shared/dist" }
+  ]
+
+}

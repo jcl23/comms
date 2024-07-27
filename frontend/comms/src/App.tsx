@@ -5,24 +5,23 @@ import parseCookie from './cookieParse';
 import UtilityAdmin from './components/UtilityAdmin/UtilityAdmin';
 import Header from './components/Header';
 import { CalloutEditor } from './components/MapSelector/CalloutEditor';
-
+import { PlanEditor } from './components/Plan/PlanEditor';
 
 export type AppState = {
-  currentView: 'create' | 'join' | 'in-lobby' | 'in-own-lobby' | "editutil" | "callouts" | null;
+  currentView: 'create' | 'join' | 'in-lobby' | 'in-own-lobby' | "editutil" | "callouts" | "editplans";
   users: string[];
   inLobby: boolean;
   lobbyId?: string,
   username?: string,
 };
 const initialState: AppState = {
-  currentView: null,
+  currentView: "editplans",
   users: [],
   inLobby: false,
 };
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>(initialState);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-
   const { currentView } = state;
   const renderForm = () => {
     if (currentView === 'create') {
@@ -71,6 +70,7 @@ const App: React.FC = () => {
         </div>
       )}
       {currentView === "editutil" && <UtilityAdmin />}
+      {currentView === "editplans" && <PlanEditor />}
       {currentView === "callouts" && <CalloutEditor />}
       {socket && (
        <div>

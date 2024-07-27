@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import {Utility, UtilThrow, StrafeType, isUtility, isSpeed, isStrafeType, isThrowType } from "@shared/enums/utility";
+import { Plan } from "@shared/enums/plan";
 import { isTeam, Team } from '@shared/enums/teams';
 import { isValidPair, isValidTriple } from '@shared/enums/position';
 import { MongoSchemaFor, MongoSchemaType } from '../util/types/mongoSchema';
@@ -15,7 +16,7 @@ import { isMapName } from '@shared/enums/maps';
     * where the utility activates = active position (x, y, z)
 */
 
-
+type PlanDocument = Plan & Document 
 type UtilThrowDocument = UtilThrow & Document;
 
 const schemaObject: MongoSchemaFor<UtilThrow> = {

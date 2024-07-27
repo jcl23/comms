@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
       "target": "ES6",
+      "esModuleInterop": true,
       "module": "CommonJS",
       "strict": true,
-      "esModuleInterop": true,
       "skipLibCheck": true,
       "outDir": "./dist",
       "rootDir": "./src",
@@ -18,6 +18,6 @@
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"],
     "references": [
-      { "path": "../shared" }
+      { "path": "../shared/dist" }
     ]
 }

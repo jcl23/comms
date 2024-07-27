@@ -10,11 +10,11 @@
     "noEmit": true,
     "paths": {
       "*": ["node_modules/*"],
-      "@shared/*": ["../../shared/*"]
+      "@shared/*": ["./../../../shared/dist/*"]
     },
   },
-  "include": ["vite.config.ts"],
+  "include": ["vite.config.ts", "src/**/*.ts"],
   "references": [
-      { "path": "../shared" }
+      { "path": "../../shared/dist" }
   ]
 }
