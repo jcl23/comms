@@ -1,8 +1,7 @@
 .dropdown {
     text-align: center;
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    width: calc(100% - 30px);
     font-size: large;
     background-color: #222;
     color: white;
@@ -11,3 +10,4 @@
     border: none;
     box-shadow: 0px 1px 4px rgb(0, 0, 0) inset;
 }
+

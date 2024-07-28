@@ -19,6 +19,7 @@ var expressWs = expressWs_(app);
 
 import instructionsRouter from "./routes/instructions";
 import throwsRouter from "./routes/throws";
+import plansRouter from "./routes/plans";
 
 import { Lobby, createLobby } from "./lobby";
 
@@ -37,6 +38,7 @@ app.use(express.static(path.join("public", "scripts")));
 
 app.use("/instructions", instructionsRouter)
 app.use("/throws", throwsRouter)
+app.use("/plans", plansRouter)
 
 app.get("/", (req, res) => {
     debugger;

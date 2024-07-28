@@ -1,0 +1,18 @@
+.pickerHeader {
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+    height: 80px;
+}
+
+.pickerHeader > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 70%;
+}
+
+.pickerHeader > button {
+    width: calc(30% - 20px);
+    margin: 10px 0px;
+}

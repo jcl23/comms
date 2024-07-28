@@ -3,7 +3,7 @@ import CreateLobbyForm from './components/CreateLobbyForm';
 import JoinLobbyForm from './components/JoinLobbyForm';
 import parseCookie from './cookieParse';
 import UtilityAdmin from './components/UtilityAdmin/UtilityAdmin';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import { CalloutEditor } from './components/MapSelector/CalloutEditor';
 import { PlanEditor } from './components/Plan/PlanEditor';
 
@@ -59,7 +59,7 @@ const App: React.FC = () => {
       
   }, [state.inLobby])
   return (
-    <div>
+    <div className="App">
       
       <Header state={state} setState={setState} />
       

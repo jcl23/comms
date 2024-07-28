@@ -83,7 +83,7 @@ const schemaObject: MongoSchemaFor<UtilThrow> = {
     video: { type: mongoose.Schema.Types.String, required: false },
     lineup: { type: mongoose.Schema.Types.String, required: false },
 
-    updatedAt: { type: mongoose.Schema.Types.String, required: false },
+    updatedAt: { type: mongoose.Schema.Types.Date, required: false },
 };
 
 export const UtilThrowSchema: Schema = new Schema<UtilThrowDocument>(schemaObject as any);

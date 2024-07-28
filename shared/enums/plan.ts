@@ -28,5 +28,6 @@ export type PlanStep = {
 
 export type Plan = {
     name: string;
+    team: "T" | "CT";
     steps: PlanStep[];
 }

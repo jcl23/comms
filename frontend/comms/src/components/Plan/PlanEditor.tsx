@@ -10,6 +10,7 @@ import MapSelector from "../MapSelector/MapSelector";
 import Dropdown from "../Dropdown/Dropdown";
 import { MapName } from "../../../../../shared/enums/maps";
 import { Team } from "../../../../../shared/enums/teams";
+import { PlanPicker } from "./PlanPicker";
 
 
 export type PlanEditorProps = {
@@ -35,7 +36,7 @@ export const PlanEditor = () => {
     const [plan, setPlan] = React.useState<PlanStep[]>(DEFAULT_PLAN);
     return (
         <div className={styles.planEditorOuter}>
-            
+            <PlanPicker />
             <div className={styles.planEditorContainer}>
                 
                 <table className={styles.planTable}>
